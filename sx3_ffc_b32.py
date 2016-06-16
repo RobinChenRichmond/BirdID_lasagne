@@ -22,17 +22,17 @@ TYPE = ".jpg" # Extension of the images in the subfolders
 DIM = 128 # Input to the network (images are resized to be square)
 PREAUG_DIM = 140 # Dimensions to augment from
 
-EPOCHS = 200
+EPOCHS = 150
 BATCH_SIZE = 32
 
-SEED1 = 6789
-SEED2 = 9876
+SEED1 = None  #6789
+SEED2 = None  #9876
 
 SAVE = False
 
-l2_regularization_rate = 0.0001
-learning_rate=0.009
-algorithm = 'adagrad'
+l2_regularization_rate = 0.0000
+learning_rate=0.0007 #0.009
+algorithm = 'adam'
 
 def build_model():
   """Returns the input and output layers in a tuple"""

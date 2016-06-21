@@ -14,19 +14,19 @@ from random import randint
 
 
 RATIO = 0.6 # The ratio of the data set to use for training
-PER_CATEGORY = 98 # Images to be used per category (training + validation)
+PER_CATEGORY = 294 # Images to be used per category (training + validation)
 CATEGORIES = 9 # Number of categories present in the data folder
 DIR = "/Users/guanyuchen/Desktop/Image Classification/training_2014_09_20" # Path to folder
 TYPE = ".jpg" # Extension of the images in the subfolders
 
 DIM = 128 # Input to the network (images are resized to be square)
-PREAUG_DIM = 140 # Dimensions to augment from
+PREAUG_DIM = 160 # Dimensions to augment from
 
 EPOCHS = 150
 BATCH_SIZE = 32
 
-SEED1 = None  #6789
-SEED2 = None  #9876
+SEED1 = 6789
+SEED2 = 9876
 
 SAVE = False
 
@@ -118,7 +118,6 @@ def build_model():
       pool_size=(2, 2),
       stride=2,
       )
-
 
   l_hidden1 = lasagne.layers.DenseLayer(
       l_pool4,

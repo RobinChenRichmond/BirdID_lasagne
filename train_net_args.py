@@ -185,8 +185,8 @@ def main (config):
 # - theano keeps a graph of operations, so that gradients w.r.t.
 #   the loss can be calculated
 
-  if (config.algorithm == 'adagrad'):
-    updates = lasagne.updates.adagrad(
+  if (config.algorithm == 'sgd'):
+    updates = lasagne.updates.sgd(
         loss_or_grads=stochastic_loss,
         params=all_params,
         learning_rate=config.learning_rate,
@@ -197,8 +197,8 @@ def main (config):
         params=all_params,
         learning_rate=config.learning_rate,
     )
-  elif (config.algorithm == 'rmsprop'):
-    updates = lasagne.updates.rmsprop(
+  elif (config.algorithm == 'momentum'):
+    updates = lasagne.updates.momentum(
         loss_or_grads=stochastic_loss,
         params=all_params,
         learning_rate=config.learning_rate,

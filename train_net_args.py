@@ -80,16 +80,39 @@ def main (config):
     feats = [p.get() for p in results]
     pool.terminate()
     sorted(feats)
+
     for feat in feats:
       feat.pop(0) # get rid of the index number that was used for sorting
       features = features + (feat[0],)
 
-  features = np.array(list(features)) # Array conversion
-  features= features.astype(theano.config.floatX) / 255.0 - 0.5
+  features = np.array(list(features)) # Array conversion  
+  """X_preTrain, X_preValid = sklearn.cross_validation.train_test_split(
+        features,
+        random_state=SEED2,
+        train_size=RATIO,
+    )
 
-#features = features.transpose( (0, 3, 1, 2) ) #(h, w, channel) to (channel, h, w)
+  X_final = X_preTrain
+  print(X_final)
+  print(len(X_final))
 
+
+  for img in X_preTrain:
+    noisy = img + 0.4 * img.std() * np.random.random(img.shape)
+
+    imagea = img.astype(float)
+    poissonNoise = np.random.poisson(50,imagea.shape).astype(float)
+    noisyImage = imagea + poissonNoise
+
+    X_final = X_final.append(noisy)
+    X_final = X_final.append(noisyImage)
+
+    print(len(X_final))"""
+  #features= features.astype(theano.config.floatX) / 255.0 - 0.5
+
+# features = features.transpose( (0, 3, 1, 2) ) #(h, w, channel) to (channel, h, w)
 # Generate labels
+
   label = np.zeros(PER_CATEGORY)
   for index in range(CATEGORIES - 1):
     arr= np.full((PER_CATEGORY,), index + 1)
@@ -105,6 +128,32 @@ def main (config):
       train_size=RATIO,
       stratify=label,
   )
+
+  X_train2 = X_train;
+  counter = 1;
+  for x in X_train2:
+      #white noise
+      #noisy = x + 0.4 * x.std() * np.random.random(x.shape)
+      #x = noisy;
+
+      """
+      randParam = randint(0, 120)
+      for i in range(40):
+        for j in range(40):
+          x[randParam+i,randParam+j,:] = 1;
+      """
+
+      #poisson noise
+      imagea = x.astype(float)
+      poissonNoise = np.random.poisson(50,imagea.shape).astype(float)
+      x = imagea + poissonNoise
+      
+      
+  
+  y_train = y_train
+  X_train = X_train.astype(theano.config.floatX) / 255.0 - 0.5
+  X_train2 = X_train2.astype(theano.config.floatX) / 255.0 - 0.5
+  X_valid = X_valid.astype(theano.config.floatX) / 255.0 - 0.5
 
 
 #X_valid = X_valid.transpose( (0, 3, 1, 2) ) #(h, w, channel) to (channel, h, w)
@@ -131,8 +180,8 @@ def main (config):
       #x = x.transpose((1, 2, 0)) # uncomment if data is transposed prior to this
 
       # Horizontal flip
-      if randint(0, 1) == 1:
-        x = x[::-1]
+      # if randint(0, 1) == 1:
+      #   x = x[::-1]
 
       x_offset = randint(0, diff)
       y_offset = randint(0, diff)
@@ -238,13 +287,30 @@ def main (config):
 
       # iterate over training minibatches and update the weights
       num_batches_train = int(np.ceil(len(X_train) / batch_size))
+      num_batches_train2 = int(np.ceil(len(X_train2) / batch_size))
+
       train_losses = []
       list_of_probabilities_batch = []
+      totalY = []
+      totalY = np.concatenate([y_train,y_train])
+      """
+      for y in y_train:
+          totalY.append(y)
+          totalY.append(y)
+
+      
+      for y in y_train:
+          totalY.append(y)
+      for y in y_train:
+          totalY.append(y)
+      print(y_train)
+      """
 
       for batch_num in range(num_batches_train):
           batch_slice = slice(batch_size * batch_num,
                               batch_size * (batch_num + 1))
           X_batch = X_train[batch_slice]
+
           y_batch = y_train[batch_slice]
           # Augment
           X_batch = augment(X_batch)
@@ -252,7 +318,20 @@ def main (config):
           loss, probabilities_batch = train_fn(X_batch, y_batch)
           train_losses.append(loss)
           list_of_probabilities_batch.append(probabilities_batch)
+      
+      for batch_num2 in range(num_batches_train2):
+          batch_slice2 = slice(batch_size * batch_num2,
+                              batch_size * (batch_num2 + 1))
+          X_batch2 = X_train2[batch_slice2]
 
+          y_batch = y_train[batch_slice2]
+          # Augment
+          X_batch2 = augment(X_batch2)
+
+          loss2, probabilities_batch2 = train_fn(X_batch2, y_batch)
+          train_losses.append(loss2)
+          list_of_probabilities_batch.append(probabilities_batch2)
+      
       # aggregate training losses for each minibatch into scalar
       train_loss = np.mean(train_losses)
       # concatenate probabilities for each batch into a matrix
@@ -260,7 +339,7 @@ def main (config):
       # calculate classes from the probabilities
       predicted_classes = np.argmax(probabilities, axis=1)
       # calculate accuracy for this epoch
-      train_accuracy = sklearn.metrics.accuracy_score(y_train, predicted_classes)
+      train_accuracy = sklearn.metrics.accuracy_score(totalY, predicted_classes)
 
       # calculate validation loss
       num_batches_valid = int(np.ceil(len(X_valid) / batch_size))

@@ -146,7 +146,7 @@ def main (config):
       #poisson noise
       imagea = x.astype(float)
       poissonNoise = np.random.poisson(50,imagea.shape).astype(float)
-        x = imagea + poissonNoise
+      x = imagea + poissonNoise
       
       
   

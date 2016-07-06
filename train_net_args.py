@@ -146,7 +146,7 @@ def main (config):
       #poisson noise
       imagea = x.astype(float)
       poissonNoise = np.random.poisson(50,imagea.shape).astype(float)
-      x = imagea + poissonNoise
+        x = imagea + poissonNoise
       
       
   
@@ -180,8 +180,8 @@ def main (config):
       #x = x.transpose((1, 2, 0)) # uncomment if data is transposed prior to this
 
       # Horizontal flip
-      # if randint(0, 1) == 1:
-      #   x = x[::-1]
+      if randint(0, 1) == 1:
+        x = x[::-1]
 
       x_offset = randint(0, diff)
       y_offset = randint(0, diff)

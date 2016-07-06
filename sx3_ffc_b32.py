@@ -20,7 +20,7 @@ DIR = "/Users/guanyuchen/Desktop/Image Classification/training_2014_09_20" # Pat
 TYPE = ".jpg" # Extension of the images in the subfolders
 
 DIM = 128 # Input to the network (images are resized to be square)
-PREAUG_DIM = 140 # Dimensions to augment from
+PREAUG_DIM = 160 # Dimensions to augment from
 
 EPOCHS = 150
 BATCH_SIZE = 32

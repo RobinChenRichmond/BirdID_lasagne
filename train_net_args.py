@@ -152,8 +152,7 @@ def main (config):
       """
       
       x = skimage.util.random_noise(x, mode='poisson', seed=None, clip=True)
-  
-  y_train = y_train
+
   X_train = X_train.astype(theano.config.floatX) / 255.0 - 0.5
   X_train2 = X_train2.astype(theano.config.floatX) / 255.0 - 0.5
   X_valid = X_valid.astype(theano.config.floatX) / 255.0 - 0.5
@@ -296,18 +295,6 @@ def main (config):
       list_of_probabilities_batch = []
       totalY = []
       totalY = np.concatenate([y_train,y_train])
-      """
-      for y in y_train:
-          totalY.append(y)
-          totalY.append(y)
-
-      
-      for y in y_train:
-          totalY.append(y)
-      for y in y_train:
-          totalY.append(y)
-      print(y_train)
-      """
 
       for batch_num in range(num_batches_train):
           batch_slice = slice(batch_size * batch_num,

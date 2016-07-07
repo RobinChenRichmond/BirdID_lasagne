@@ -9,6 +9,7 @@ import theano
 import theano.tensor as T
 import lasagne
 import sys, os.path
+import skimage.util
 from scipy.misc import imresize, imread
 from random import randint
 import argparse
@@ -130,7 +131,7 @@ def main (config):
   )
 
   X_train2 = X_train;
-  counter = 1;
+
   for x in X_train2:
       #white noise
       #noisy = x + 0.4 * x.std() * np.random.random(x.shape)
@@ -143,12 +144,14 @@ def main (config):
           x[randParam+i,randParam+j,:] = 1;
       """
 
+      """
       #poisson noise
       imagea = x.astype(float)
       poissonNoise = np.random.poisson(50,imagea.shape).astype(float)
       x = imagea + poissonNoise
+      """
       
-      
+      x = skimage.util.random_noise(x, mode='poisson', seed=None, clip=True)
   
   y_train = y_train
   X_train = X_train.astype(theano.config.floatX) / 255.0 - 0.5

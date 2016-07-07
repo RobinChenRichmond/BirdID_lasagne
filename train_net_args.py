@@ -144,14 +144,14 @@ def main (config):
           x[randParam+i,randParam+j,:] = 1;
       """
 
-      """
+      
       #poisson noise
       imagea = x.astype(float)
       poissonNoise = np.random.poisson(50,imagea.shape).astype(float)
       x = imagea + poissonNoise
-      """
       
-      x = skimage.util.random_noise(x, mode='poisson', seed=None, clip=True)
+      
+      #x = skimage.util.random_noise(x, mode='poisson', seed=None, clip=True)
 
   X_train = X_train.astype(theano.config.floatX) / 255.0 - 0.5
   X_train2 = X_train2.astype(theano.config.floatX) / 255.0 - 0.5

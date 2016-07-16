@@ -1,5 +1,7 @@
 # BirdID_lasagne
 
+This project is forked and modified from Dinc's work. It enlarges the training set by adding Poisson and Gaussian noise to the copy of the original set.
+
 Bird image classification using convolutional neural networks in Python
 
 ![Sample Bird Images](http://i.imgur.com/R2rdTBe.png)
